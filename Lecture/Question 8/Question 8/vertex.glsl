@@ -1,12 +1,12 @@
-#version 460 core
+#version 330 core
 
-layout(location = 0) in vec3 aPos;
-layout(location = 1) in vec3 aColor;
-
-out vec3 vertexColor;
+uniform mat4 transform;		
+layout (location = 0) in vec3 positionAttribute;
+in vec3 colorAttribute;
+out vec3 passColorAttribute;
 
 void main()
 {
-    gl_Position = vec4(aPos, 1.0);
-    vertexColor = aColor;
-}
+	gl_Position = transform * vec4(positionAttribute, 1.0);
+	passColorAttribute = colorAttribute;
+};
