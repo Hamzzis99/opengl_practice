@@ -15,23 +15,23 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
+    <ClCompile Include="Question 7\file_utils.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="file_utils.cpp">
+    <ClCompile Include="Question 7\main.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="vertex.glsl">
+    <None Include="Question 7\vertex.glsl">
       <Filter>리소스 파일</Filter>
     </None>
-    <None Include="fragment.glsl">
+    <None Include="Question 7\fragment.glsl">
       <Filter>리소스 파일</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="file_utils.h">
+    <ClInclude Include="Question 7\file_utils.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>

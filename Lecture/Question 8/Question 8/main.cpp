@@ -202,8 +202,9 @@ void create_tri(int clicked_area, GLclampf x, GLclampf y) {
     GLclampf tri_b = static_cast<GLclampf>(g() % 100) / 100.0f;
     float size = 0.1f + static_cast<float>(g() % 50) / 500.0f;
 
-    // 이등변 삼각형의 정점 계산
-    float height = size * (std::sqrt(3.0f) / 2.0f);
+    //// 이등변 삼각형의 정점 계산
+
+    float height = size * std::sqrt(3.0f);  // 높이를 두 배로 설정
     float triX1 = x;
     float triY1 = y + height / 2.0f;
     float triX2 = x - size / 2.0f;

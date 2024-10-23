@@ -21,8 +21,8 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{87c32ba1-0383-46d8-8512-e1fec07b2786}</ProjectGuid>
-    <RootNamespace>Question7</RootNamespace>
+    <ProjectGuid>{6b00ede3-680f-4da2-a072-2ba3dedb717b}</ProjectGuid>
+    <RootNamespace>Question10</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -128,15 +128,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="file_utils.cpp" />
-    <ClCompile Include="main.cpp" />
+    <ClInclude Include="file_utils.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="fragment.glsl" />
     <None Include="vertex.glsl" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="file_utils.h" />
+    <ClCompile Include="file_utils.cpp" />
+    <ClCompile Include="main.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
