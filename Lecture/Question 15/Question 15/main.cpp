@@ -5,8 +5,8 @@
 #include <glm/ext.hpp>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
-#include "open_file.h"    // 변경: file_open.h → open_file.h
-#include "open_obj.h"     // 변경: read_obj.h → open_obj.h
+#include "open_file.h"    
+#include "open_obj.h"     
 #include <random>
 #include <vector>
 

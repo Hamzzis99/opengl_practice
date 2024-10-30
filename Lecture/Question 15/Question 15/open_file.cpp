@@ -1,5 +1,7 @@
 ﻿#include "open_file.h"
 
+//open_file_to_buf -> open_file
+
 char* open_file_to_buf(const char* file_name) {
     FILE* file;
     fopen_s(&file, file_name, "r");
