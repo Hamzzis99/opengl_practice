@@ -1,54 +1,85 @@
-#include "open_obj.h"
+// open_obj.cpp
 
-void read_newline(char* str) {
-    char* pos;
-    if ((pos = strchr(str, '\n')) != NULL)
-        *pos = '\0';
+#include "open_obj.h"
+#include <iostream>
+#include <fstream>
+#include <sstream>
+#include <vector>
+
+// OBJ 파일을 로드하는 함수 구현 (예시)
+bool loadOBJ(const std::string& filepath, Model* model) {
+    std::ifstream file(filepath);
+    if (!file.is_open()) {
+        std::cerr << "ERROR: Unable to open file " << filepath << std::endl;
+        return false;
+    }
+
+    // 임시 저장소
+    std::vector<Vertex> temp_vertices;
+    std::vector<Face> temp_faces;
+
+    std::string line;
+    while (std::getline(file, line)) {
+        std::istringstream iss(line);
+        std::string prefix;
+        iss >> prefix;
+
+        if (prefix == "v") {
+            Vertex vertex;
+            iss >> vertex.x >> vertex.y >> vertex.z;
+            // 기본 색상 할당 (흰색)
+            vertex.r = 1.0f;
+            vertex.g = 1.0f;
+            vertex.b = 1.0f;
+            temp_vertices.push_back(vertex);
+        }
+        else if (prefix == "f") {
+            Face face;
+            std::string v1, v2, v3;
+            iss >> v1 >> v2 >> v3;
+            // OBJ 파일의 정점 인덱스는 1부터 시작하므로 0으로 조정
+            face.v1 = std::stoi(v1) - 1;
+            face.v2 = std::stoi(v2) - 1;
+            face.v3 = std::stoi(v3) - 1;
+            temp_faces.push_back(face);
+        }
+        // 기타 필요한 OBJ 요소 처리 가능
+    }
+
+    file.close();
+
+    // 모델에 데이터 할당
+    model->vertex_count = static_cast<int>(temp_vertices.size());
+    model->vertices = new Vertex[model->vertex_count];
+    for (int i = 0; i < model->vertex_count; ++i) {
+        model->vertices[i] = temp_vertices[i];
+    }
+
+    model->face_count = static_cast<int>(temp_faces.size());
+    model->faces = new Face[model->face_count];
+    for (int i = 0; i < model->face_count; ++i) {
+        model->faces[i] = temp_faces[i];
+    }
+
+    return true;
 }
 
-void open_obj(const char* filename, Model* model) {  // 함수명 변경
-    FILE* file;
-    fopen_s(&file, filename, "r");
-    if (!file) {
-        perror("Error opening file");
-        exit(EXIT_FAILURE);
+// 모델의 정점 정보를 콘솔에 출력하는 디버깅 함수 구현
+void printModelVertices(const Model& model) {
+    std::cout << "Model Vertex Count: " << model.vertex_count << std::endl;
+    for (int i = 0; i < model.vertex_count; ++i) {
+        const Vertex& v = model.vertices[i];
+        std::cout << "Vertex " << i + 1 << ": ("
+            << v.x << ", " << v.y << ", " << v.z << ") - Color: ("
+            << v.r << ", " << v.g << ", " << v.b << ")"
+            << std::endl;
     }
-    char line[128];
-    model->vertex_count = 0;
-    model->face_count = 0;
 
-    while (fgets(line, sizeof(line), file)) {
-        read_newline(line);
-        if (line[0] == 'v' && line[1] == ' ')
-            model->vertex_count++;
-        else if (line[0] == 'f' && line[1] == ' ')
-            model->face_count++;
+    std::cout << "Model Face Count: " << model.face_count << std::endl;
+    for (int i = 0; i < model.face_count; ++i) {
+        const Face& f = model.faces[i];
+        std::cout << "Face " << i + 1 << ": ("
+            << f.v1 + 1 << ", " << f.v2 + 1 << ", " << f.v3 + 1 << ")"
+            << std::endl;
     }
-    fseek(file, 0, SEEK_SET);
-
-    model->vertices = (Vertex*)malloc(model->vertex_count * sizeof(Vertex));
-    model->faces = (Face*)malloc(model->face_count * sizeof(Face));
-
-    size_t vertex_index = 0;
-    size_t face_index = 0;
-
-    while (fgets(line, sizeof(line), file)) {
-        read_newline(line);
-        if (line[0] == 'v' && line[1] == ' ') {
-            sscanf_s(line + 2, "%f %f %f",
-                &model->vertices[vertex_index].x,
-                &model->vertices[vertex_index].y,
-                &model->vertices[vertex_index].z);
-            vertex_index++;
-        }
-        else if (line[0] == 'f' && line[1] == ' ') {
-            unsigned int v1, v2, v3;
-            sscanf_s(line + 2, "%u %u %u", &v1, &v2, &v3);
-            model->faces[face_index].v1 = v1 - 1;
-            model->faces[face_index].v2 = v2 - 1;
-            model->faces[face_index].v3 = v3 - 1;
-            face_index++;
-        }
-    }
-    fclose(file);
 }

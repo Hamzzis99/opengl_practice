@@ -1,24 +1,33 @@
+// open_obj.h
 #pragma once
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#ifndef OPEN_OBJ_H
+#define OPEN_OBJ_H
 
-// 구조체 정의
-typedef struct {
-    float x, y, z;
-} Vertex;
+#include <string>
 
-typedef struct {
-    unsigned int v1, v2, v3;
-} Face;
+// Vertex 구조체 예시
+struct Vertex {
+    float x, y, z;    // 위치
+    float r, g, b;    // 색상
+};
 
-typedef struct {
+// Face 구조체 예시
+struct Face {
+    unsigned int v1, v2, v3; // 정점 인덱스
+};
+
+// Model 구조체 예시
+struct Model {
+    int vertex_count;
     Vertex* vertices;
-    size_t vertex_count;
+    int face_count;
     Face* faces;
-    size_t face_count;
-} Model;
+};
 
-// 함수 선언
-void read_newline(char* str);
-void open_obj(const char* filename, Model* model);
+// OBJ 파일을 로드하는 함수
+bool loadOBJ(const std::string& filepath, Model* model);
+
+// 모델의 정점 정보를 콘솔에 출력하는 디버깅 함수
+void printModelVertices(const Model& model);
+
+#endif // OPEN_OBJ_H

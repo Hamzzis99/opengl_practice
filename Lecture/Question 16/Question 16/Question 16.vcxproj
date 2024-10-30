@@ -21,7 +21,7 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{17d0ebf1-179d-492a-9904-8e34aad4a761}</ProjectGuid>
+    <ProjectGuid>{48300622-67ca-4c67-b8c9-78d5d4c19ca0}</ProjectGuid>
     <RootNamespace>Question16</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
@@ -128,13 +128,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="open_obj.cpp" />
-    <ClCompile Include="open_file.cpp" />
-  </ItemGroup>
-  <ItemGroup>
     <ClInclude Include="open_file.h" />
     <ClInclude Include="open_obj.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="open_file.cpp" />
+    <ClCompile Include="open_obj.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="fragment.glsl" />
