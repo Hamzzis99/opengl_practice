@@ -50,9 +50,9 @@ struct Shape {
 };
 
 // 함수 선언 (Shape 정의 이후)
-void make_vertexShaders();
-void make_fragmentShaders();
-void make_shaderProgram();
+void Make_vertexShaders();
+void Make_fragmentShaders();
+void Make_shaderProgram();
 GLvoid drawScene();
 GLvoid Reshape(int w, int h);
 void InitBuffer();
@@ -60,11 +60,11 @@ void TimerFunc(int value);
 GLvoid Keyboard(unsigned char key, int x, int y);
 void Mouse(int button, int state, int x, int y);
 void Motion(int x, int y);
-void make_newShape();
-void split_shape(Shape s);
+void Make_newShape();
+void Split_shape(Shape s);
 void Collide_shape(Shape s);
-bool collide_box(Shape s);
-bool crossing_vertex();
+bool Collide_box(Shape s);
+bool Crossing_vertex();
 
 // 쉐이더 소스 및 객체
 GLchar* vertexSource = nullptr;
@@ -155,7 +155,7 @@ void Shape::draw() {
 }
 
 // 교차점 검사 함수
-bool crossing_vertex() {
+bool Crossing_vertex() {
     float cx, cy;
     m1 = (Y2 - Y1) / (X2 - X1);
     m2 = (Y4 - Y3) / (X4 - X3);
@@ -190,7 +190,7 @@ void Collide_shape(Shape s) {
             X4 = s.point[i + 1].xyz.x; Y4 = s.point[i + 1].xyz.y;
         }
 
-        if (crossing_vertex()) {
+        if (Crossing_vertex()) {
             std::cout << "교차점 발견: (" << p.xyz.x << ", " << p.xyz.y << ")\n";
             if (cross_num == 0) {
                 p.xyz = { s.point[i].xyz.x, s.point[i].xyz.y, 1.0f };
@@ -226,7 +226,7 @@ void Collide_shape(Shape s) {
 }
 
 // 도형 분할 함수
-void split_shape(Shape s) {
+void Split_shape(Shape s) {
     std::cout << "도형 분할 시작: 도형 종류 = " << s.s << ", 중심 좌표 = (" << s.x << ", " << s.y << ")\n";
 
     // 왼쪽 도형 생성
@@ -275,7 +275,7 @@ void split_shape(Shape s) {
 }
 
 // 바구니와 도형 충돌 검사 함수
-bool collide_box(Shape s) {
+bool Collide_box(Shape s) {
     if (s.x >= box[0][0] && s.x <= box[3][0]) {
         for (size_t i = 0; i < s.point.size(); ++i) {
             if (s.point[i].xyz.y <= box[0][1]) return true;
@@ -285,7 +285,7 @@ bool collide_box(Shape s) {
 }
 
 // 새로운 도형 생성 함수
-void make_newShape() {
+void Make_newShape() {
     temp_shape.s = uidd(dre); // 0부터 3까지의 랜덤 정수 선택
     temp_shape.vertex_num = 0;
     temp_shape.point.clear(); temp_shape.color.clear();
@@ -358,7 +358,7 @@ void make_newShape() {
 }
 
 // 버텍스 쉐이더 생성 함수
-void make_vertexShaders()
+void Make_vertexShaders()
 {
     vertexSource = loadShaderSource("vertex.glsl"); // 쉐이더 파일 로딩
     if (!vertexSource) {
@@ -391,7 +391,7 @@ void make_vertexShaders()
 }
 
 // 프래그먼트 쉐이더 생성 함수
-void make_fragmentShaders()
+void Make_fragmentShaders()
 {
     fragmentSource = loadShaderSource("fragment.glsl"); // 쉐이더 파일 로딩
     if (!fragmentSource) {
@@ -424,10 +424,10 @@ void make_fragmentShaders()
 }
 
 // 쉐이더 프로그램 생성 함수
-void make_shaderProgram()
+void Make_shaderProgram()
 {
-    make_vertexShaders(); // 버텍스 세이더 생성 및 컴파일
-    make_fragmentShaders(); // 프래그먼트 세이더 생성 및 컴파일
+    Make_vertexShaders(); // 버텍스 세이더 생성 및 컴파일
+    Make_fragmentShaders(); // 프래그먼트 세이더 생성 및 컴파일
 
     // 쉐이더 프로그램 생성
     shaderProgramID = glCreateProgram();
@@ -469,7 +469,7 @@ void TimerFunc(int value)
     // 새로운 도형 생성
     new_shape_time++;
     if (new_shape_time >= 100) {
-        make_newShape();
+        Make_newShape();
         new_shape_time = 0;
     }
 
@@ -505,7 +505,7 @@ void TimerFunc(int value)
 
     // 바구니와 도형 충돌 처리
     for (size_t i = 0; i < shape.size(); ++i) {
-        if (collide_box(shape[i])) {
+        if (Collide_box(shape[i])) {
             shape[i].tx = box_xmove; shape[i].ty = 0.0f;
             shape[i].rotate_r = 0.0f;
         }
@@ -580,7 +580,7 @@ void Mouse(int button, int state, int x, int y)
             if (!shape[i].split) {
                 Collide_shape(shape[i]);
                 if (cross_num == 2) {
-                    split_shape(shape[i]);
+                    Split_shape(shape[i]);
                     shape[i].split = true; // 원래 도형의 split 플래그 설정
                     std::cout << "도형 분할 처리 완료: 인덱스 " << i << "\n";
                 }
@@ -705,9 +705,9 @@ int main(int argc, char** argv)
         return EXIT_FAILURE;
     }
 
-    make_shaderProgram();
+    Make_shaderProgram();
     InitBuffer();
-    make_newShape();
+    Make_newShape();
     glutTimerFunc(timer_speed, TimerFunc, 1);
     glutKeyboardFunc(Keyboard);
     glutMouseFunc(Mouse);
